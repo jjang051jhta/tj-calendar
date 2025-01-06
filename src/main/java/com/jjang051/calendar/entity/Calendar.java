@@ -46,9 +46,9 @@ public class Calendar {
                 .id(calendar.getId())
                 .title(calendar.getTitle())
                 .start(calendar.getStartDate()+" "+calendar.getStartTime())
-                .startTime(calendar.getStartTime())
+                //.startTime(null)
                 .end(calendar.getEndDate()+" "+calendar.getEndTime())
-                .endTime(calendar.getEndTime())
+                //.endTime(null)
                 .allDay(calendar.getAllDay())
                 .build();
     }

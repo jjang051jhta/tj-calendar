@@ -109,6 +109,7 @@
 
     <script>
       const calendarModal = new bootstrap.Modal("#calendar-modal");
+      const btnInsert = document.querySelector("#btn-insert");
       document.addEventListener("DOMContentLoaded", function () {
         const calendarEl = document.querySelector("#calendar");
         const calendar = new FullCalendar.Calendar(calendarEl, {
@@ -124,9 +125,48 @@
           },
           events: {
             url: "/calendar/list",
+            success: function (response) {
+              console.log("다시 한번 refetch한다.");
+              console.log(response);
+            },
           },
         });
         calendar.render();
+
+        btnInsert.addEventListener("click", (e) => {
+          e.preventDefault();
+          const calendarForm = document.forms["calendar-form"];
+          const sendData = {
+            title: calendarForm.title.value,
+            start: calendarForm.start.value,
+            //startTime:calendarForm["start-time"].value
+            startTime: calendarForm.startTime.value,
+            end: calendarForm.end.value,
+            //startTime:calendarForm["start-time"].value
+            endTime: calendarForm.endTime.value,
+            allDay: calendarForm.allDay.checked ? true : false,
+          };
+          fetch("/calendar/insert", {
+            method: "post",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(sendData),
+          })
+            .then((response) => response.json())
+            .then((json) => {
+              console.log(json);
+              if (json.isInsert === "ok") {
+                alert("일정이 추가되었습니다.");
+              } else {
+                alert(
+                  "알 수 없는 오류로 인해 입력이 되지 않았습니다. 잠시 후 다시 시도해 주세요."
+                );
+              }
+              calendarModal.hide();
+              calendar.refetchEvents();
+            });
+        });
       });
       fetch("/calendar/list")
         .then((response) => response.json())
@@ -134,41 +174,6 @@
           console.log("json");
           console.log(json);
         });
-      const btnInsert = document.querySelector("#btn-insert");
-      btnInsert.addEventListener("click", (e) => {
-        e.preventDefault();
-        const calendarForm = document.forms["calendar-form"];
-        const sendData = {
-          title: calendarForm.title.value,
-          start: calendarForm.start.value,
-          //startTime:calendarForm["start-time"].value
-          startTime: calendarForm.startTime.value,
-          end: calendarForm.end.value,
-          //startTime:calendarForm["start-time"].value
-          endTime: calendarForm.endTime.value,
-          allDay: calendarForm.allDay.checked ? true : false,
-        };
-        fetch("/calendar/insert", {
-          method: "post",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(sendData),
-        })
-          .then((response) => response.json())
-          .then((json) => {
-            console.log(json);
-            if (json.isInsert === "ok") {
-              alert("일정이 추가되었습니다.");
-            } else {
-              alert(
-                "알 수 없는 오류로 인해 입력이 되지 않았습니다. 잠시 후 다시 시도해 주세요."
-              );
-            }
-            calendarModal.hide();
-            calendar.refetchEvents();
-          });
-      });
     </script>
   </body>
 </html>
