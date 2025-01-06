@@ -54,6 +54,7 @@
               action="/calendar/insert"
               thth:action="@{|/calendar/insert|}"
               method="post"
+              name="calendar-form"
               id="calendar-form"
             >
               <div class="mt-3">
@@ -84,7 +85,9 @@
                 />
               </div>
               <div class="mt-3">
-                <button class="btn btn-primary">일정추가</button>
+                <button class="btn btn-primary" id="btn-insert">
+                  일정추가
+                </button>
               </div>
             </form>
           </div>
@@ -103,9 +106,8 @@
     </div>
 
     <script>
+      const calendarModal = new bootstrap.Modal("#calendar-modal");
       document.addEventListener("DOMContentLoaded", function () {
-        const calendarModal = new bootstrap.Modal("#calendar-modal");
-
         const calendarEl = document.querySelector("#calendar");
         const calendar = new FullCalendar.Calendar(calendarEl, {
           initialView: "dayGridMonth",
@@ -142,6 +144,41 @@
           console.log("json");
           console.log(json);
         });
+      const btnInsert = document.querySelector("#btn-insert");
+
+      btnInsert.addEventListener("click", (e) => {
+        e.preventDefault();
+        const calendarForm = document.forms["calendar-form"];
+        const sendData = {
+          title: calendarForm.title.value,
+          start: calendarForm.start.value,
+          //startTime:calendarForm["start-time"].value
+          startTime: calendarForm.startTime.value,
+          end: calendarForm.end.value,
+          //startTime:calendarForm["start-time"].value
+          endTime: calendarForm.endTime.value,
+          allDay: calendarForm.allDay.value,
+        };
+        fetch("/calendar/insert", {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(sendData),
+        })
+          .then((response) => response.json())
+          .then((json) => {
+            console.log(json);
+            if (json.isInsert === "ok") {
+              alert("일정이 추가되었습니다.");
+            } else {
+              alert(
+                "알 수 없는 오류로 인해 입력이 되지 않았습니다. 잠시 후 다시 시도해 주세요."
+              );
+            }
+            calendarModal.hide();
+          });
+      });
     </script>
   </body>
 </html>

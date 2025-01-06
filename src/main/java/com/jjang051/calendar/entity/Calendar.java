@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -28,4 +29,13 @@ public class Calendar {
 
   private String allDay;
 
+  @Builder
+  public Calendar(String startDate, String startTime,String endDate, String endTime,String title, String allDay) {
+    this.title=title;
+    this.startDate=startDate;
+    this.endDate=endDate;
+    this.startTime=startTime;
+    this.endTime=endTime;
+    this.allDay=allDay;
+  }
 }
