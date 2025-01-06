@@ -24,7 +24,7 @@ public class CalendarService {
      .startTime(calendarDto.getStartTime())
      .endTime(calendarDto.getEndTime())
      .title(calendarDto.getTitle())
-     .allDay(calendarDto.getAllDay())
+     .allDay(calendarDto.isAllDay())
      .build();
     Calendar savedCalendar = calendarRepository.save(calendar);
     return savedCalendar;

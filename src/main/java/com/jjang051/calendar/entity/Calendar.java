@@ -29,10 +29,10 @@ public class Calendar {
 
   private String title;
 
-  private String allDay;
+  private Boolean allDay;  //21c 이상에서는 true / false  boolean값 있음 이하 버전에서는 없음
 
   @Builder
-  public Calendar(String startDate, String startTime,String endDate, String endTime,String title, String allDay) {
+  public Calendar(String startDate, String startTime,String endDate, String endTime,String title, Boolean allDay) {
     this.title=title;
     this.startDate=startDate;
     this.endDate=endDate;
@@ -49,7 +49,7 @@ public class Calendar {
                 .startTime(calendar.getStartTime())
                 .end(calendar.getEndDate()+" "+calendar.getEndTime())
                 .endTime(calendar.getEndTime())
-                .allDay(calendar.getAllDay().equals("true") ? true : false)
+                .allDay(calendar.getAllDay())
                 .build();
     }
 }
