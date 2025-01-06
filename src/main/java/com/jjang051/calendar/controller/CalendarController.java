@@ -37,23 +37,24 @@ public class CalendarController {
   @GetMapping("/list")
   @ResponseBody
   public List<CalendarDto> list() {
-      List<CalendarDto> calendarList =  new ArrayList<>();
-      // CalendarDto calendarDto01 = CalendarDto.builder()
-      //                             .id(1)
-      //                             .title("할 일 없음")
-      //                             .start("2025-01-08 11:00")
-      //                             .end("2025-01-10 12:00")
-      //                             .build();
+      /*
+      CalendarDto calendarDto01 = CalendarDto.builder()
+                                  .id(1)
+                                  .title("할 일 없음")
+                                  .start("2025-01-08 11:00")
+                                  .end("2025-01-10 12:00")
+                                  .build();
 
-      // CalendarDto calendarDto02 = CalendarDto.builder()
-      //                             .id(2)
-      //                             .title("할 일 많음")
-      //                             .start("2025-01-12 11:00")
-      //                             .end("2025-01-18 12:00")
-      //                             .build();
-      // calendarList.add(calendarDto01);
-      // calendarList.add(calendarDto02);
-      List<CalendarDto> calendarDtoList = calendarService.getList();
+      CalendarDto calendarDto02 = CalendarDto.builder()
+                                  .id(2)
+                                  .title("할 일 많음")
+                                  .start("2025-01-12 11:00")
+                                  .end("2025-01-18 12:00")
+                                  .build();
+      calendarList.add(calendarDto01);
+      calendarList.add(calendarDto02);
+       */
+      List<CalendarDto> calendarList = calendarService.getList();
       return calendarList;
   }
   @PostMapping("/insert")

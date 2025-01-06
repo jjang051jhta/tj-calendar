@@ -1,5 +1,7 @@
 package com.jjang051.calendar.entity;
 
+import com.jjang051.calendar.dto.CalendarDto;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -38,4 +40,16 @@ public class Calendar {
     this.endTime=endTime;
     this.allDay=allDay;
   }
+
+  public static CalendarDto fromEntity(Calendar calendar) {
+        return CalendarDto.builder()
+                .id(calendar.getId())
+                .title(calendar.getTitle())
+                .start(calendar.getStartDate()+" "+calendar.getStartTime())
+                .startTime(calendar.getStartTime())
+                .end(calendar.getEndDate()+" "+calendar.getEndTime())
+                .endTime(calendar.getEndTime())
+                .allDay(calendar.getAllDay().equals("true") ? true : false)
+                .build();
+    }
 }

@@ -20,5 +20,5 @@ public class CalendarDto {
   private String startTime;
   private String end;
   private String endTime;
-  private String allDay;
+  private boolean allDay;
 }
