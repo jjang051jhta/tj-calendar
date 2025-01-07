@@ -110,6 +110,8 @@
     <script>
       const calendarModal = new bootstrap.Modal("#calendar-modal");
       const btnInsert = document.querySelector("#btn-insert");
+      const calendarForm = document.forms["calendar-form"];
+
       document.addEventListener("DOMContentLoaded", function () {
         const calendarEl = document.querySelector("#calendar");
         const calendar = new FullCalendar.Calendar(calendarEl, {
@@ -121,7 +123,38 @@
           },
           select: function (e) {
             console.log("select");
+            console.log(e);
             calendarModal.show();
+          },
+          eventChange: function (e) {
+            console.log(e);
+            const sendData = {
+              title: e.event.title,
+              start: e.event.startStr,
+              end: e.event.endStr,
+              id: e.event.id,
+              allDay: e.event.allDay,
+            };
+            fetch("/calendar/change", {
+              method: "post",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(sendData),
+            })
+              .then((response) => response.json())
+              .then((json) => {
+                console.log(json);
+                if (json.isChange === "ok") {
+                  alert("일정이 바꼈습니다.");
+                } else {
+                  alert(
+                    "알 수 없는 오류로 인해 입력이 되지 않았습니다. 잠시 후 다시 시도해 주세요."
+                  );
+                }
+                calendarModal.hide();
+                calendar.refetchEvents();
+              });
           },
           events: {
             url: "/calendar/list",
@@ -135,15 +168,22 @@
 
         btnInsert.addEventListener("click", (e) => {
           e.preventDefault();
-          const calendarForm = document.forms["calendar-form"];
+          let startTime = "";
+          if (calendarForm.startTime.value.trim() === "") {
+            startTime = "00:00";
+          } else {
+            startTime = calendarForm.startTime.value;
+          }
+          if (calendarForm.endTime.value.trim() === "") {
+            endTime = "00:00";
+          } else {
+            endTime = calendarForm.endTime.value;
+          }
+
           const sendData = {
             title: calendarForm.title.value,
-            start: calendarForm.start.value,
-            //startTime:calendarForm["start-time"].value
-            startTime: calendarForm.startTime.value,
-            end: calendarForm.end.value,
-            //startTime:calendarForm["start-time"].value
-            endTime: calendarForm.endTime.value,
+            start: calendarForm.start.value + " " + startTime,
+            end: calendarForm.end.value + " " + endTime,
             allDay: calendarForm.allDay.checked ? true : false,
           };
           fetch("/calendar/insert", {

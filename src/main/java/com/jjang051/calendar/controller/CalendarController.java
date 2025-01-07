@@ -70,4 +70,18 @@ public class CalendarController {
     }
     return resultMap;
   }
+
+  @PostMapping("/change")
+  @ResponseBody
+  public Map<String,String> change(@RequestBody CalendarDto calendarDto) {
+    log.info("calendarDto=={}",calendarDto.toString());
+    Calendar changedCalendar = calendarService.change(calendarDto);
+    Map<String,String>  resultMap = new HashMap<>();
+    if(changedCalendar!=null) {
+      resultMap.put("isChange", "ok");
+    } else {
+      resultMap.put("isChange", "fail");
+    }
+    return resultMap;
+  }
 }

@@ -1,5 +1,7 @@
 package com.jjang051.calendar.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,8 +19,11 @@ public class CalendarDto {
   private Integer id;
   private String title;
   private String start;
-  private String startTime;
+
+  //private String startTime;
   private String end;
-  private String endTime;
+
+  //private String endTime;
+
   private boolean allDay;
 }
