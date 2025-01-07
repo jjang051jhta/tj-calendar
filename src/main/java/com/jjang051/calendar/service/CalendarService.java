@@ -28,6 +28,7 @@ public class CalendarService {
      .endDate(calendarDto.getEnd())
      .title(calendarDto.getTitle())
      .allDay(calendarDto.isAllDay())
+     .work(calendarDto.getWork())
      .build();
     Calendar savedCalendar = calendarRepository.save(calendar);
     return savedCalendar;
@@ -50,16 +51,16 @@ public class CalendarService {
     log.info("calendarDto==={}",calendarDto);
     if(optionalCalendar.isPresent()) {
       findedCalendar = optionalCalendar.get();
-      // Calendar changeCalendar = Calendar.builder()
-      //                             .id(calendarDto.getId())
-      //                             .startDate(calendarDto.getStart())
-      //                             .endDate(calendarDto.getEnd())
-      //                             .title(calendarDto.getTitle())
-      //                             .allDay(calendarDto.isAllDay())
-      //                             .build();
-      //return calendarRepository.save(changeCalendar);
-      findedCalendar.updateDate(calendarDto.getStart(), calendarDto.getStart());
-      return findedCalendar;
+      Calendar changeCalendar = Calendar.builder()
+                                  .startDate(calendarDto.getStart())
+                                  .endDate(calendarDto.getEnd())
+                                  .title(calendarDto.getTitle())
+                                  .allDay(calendarDto.isAllDay())
+                                  .work(calendarDto.getWork())
+                                  .build();
+      return calendarRepository.save(changeCalendar);
+      //findedCalendar.updateDate(calendarDto.getStart(), calendarDto.getStart());
+      //return findedCalendar;
     }
     return null;
   }

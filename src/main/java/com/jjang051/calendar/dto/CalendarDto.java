@@ -19,11 +19,7 @@ public class CalendarDto {
   private Integer id;
   private String title;
   private String start;
-
-  //private String startTime;
   private String end;
-
-  //private String endTime;
-
+  private String work;
   private boolean allDay;
 }

@@ -94,7 +94,7 @@
                   name="work"
                   id="danger"
                   autocomplete="off"
-                  value="red"
+                  value="#dc3545"
                   checked
                 />
                 <label class="btn btn-outline-danger" for="danger"
@@ -105,7 +105,7 @@
                   class="btn-check"
                   name="work"
                   id="warning"
-                  value="blue"
+                  value="#ffc107"
                   autocomplete="off"
                 />
                 <label class="btn btn-outline-warning" for="warning"
@@ -116,7 +116,7 @@
                   class="btn-check"
                   name="work"
                   id="primary"
-                  value="green"
+                  value="#0d6efd"
                   autocomplete="off"
                 />
                 <label class="btn btn-outline-primary" for="primary"
@@ -127,7 +127,7 @@
                   class="btn-check"
                   name="work"
                   id="success"
-                  value="gray"
+                  value="#198754"
                   autocomplete="off"
                 />
                 <label class="btn btn-outline-success" for="success"
@@ -159,7 +159,7 @@
       const calendarModal = new bootstrap.Modal("#calendar-modal");
       const btnInsert = document.querySelector("#btn-insert");
       const calendarForm = document.forms["calendar-form"];
-
+      let work = null;
       document.addEventListener("DOMContentLoaded", function () {
         const calendarEl = document.querySelector("#calendar");
         const calendar = new FullCalendar.Calendar(calendarEl, {
@@ -221,7 +221,14 @@
                 fetch("/calendar/list")
                   .then((response) => response.json())
                   .then((json) => {
-                    successCallback(json);
+                    console.log(json);
+                    const changedJson = json.map((item) => ({
+                      ...item,
+                      backgroundColor: item.work,
+                      borderColor: item.work,
+                    }));
+                    console.log("changedJson===", changedJson);
+                    successCallback(changedJson);
                   })
                   .catch((json) => {
                     failCallback(json);
@@ -252,7 +259,9 @@
             start: calendarForm.start.value + " " + startTime,
             end: calendarForm.end.value + " " + endTime,
             allDay: calendarForm.allDay.checked ? true : false,
+            work: document.querySelector('input[name="work"]:checked')?.value,
           };
+          console.log(sendData);
           fetch("/calendar/insert", {
             method: "post",
             headers: {
