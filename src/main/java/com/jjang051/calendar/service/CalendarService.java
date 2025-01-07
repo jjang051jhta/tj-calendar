@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.jjang051.calendar.dto.CalendarDto;
 import com.jjang051.calendar.entity.Calendar;
@@ -41,20 +42,24 @@ public class CalendarService {
     return calendarDtoList;
   }
 
+  //영속성
+  @Transactional
   public Calendar change(CalendarDto calendarDto) {
     Optional<Calendar> optionalCalendar = calendarRepository.findById(calendarDto.getId());
     Calendar findedCalendar = null;
     log.info("calendarDto==={}",calendarDto);
     if(optionalCalendar.isPresent()) {
       findedCalendar = optionalCalendar.get();
-      Calendar changeCalendar = Calendar.builder()
-                                  .id(calendarDto.getId())
-                                  .startDate(calendarDto.getStart())
-                                  .endDate(calendarDto.getEnd())
-                                  .title(calendarDto.getTitle())
-                                  .allDay(calendarDto.isAllDay())
-                                  .build();
-     return calendarRepository.save(changeCalendar);
+      // Calendar changeCalendar = Calendar.builder()
+      //                             .id(calendarDto.getId())
+      //                             .startDate(calendarDto.getStart())
+      //                             .endDate(calendarDto.getEnd())
+      //                             .title(calendarDto.getTitle())
+      //                             .allDay(calendarDto.isAllDay())
+      //                             .build();
+      //return calendarRepository.save(changeCalendar);
+      findedCalendar.updateDate(calendarDto.getStart(), calendarDto.getStart());
+      return findedCalendar;
     }
     return null;
   }

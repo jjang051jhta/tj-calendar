@@ -39,6 +39,32 @@ public class Calendar {
     this.allDay=allDay;
   }
 
+  public void updateStartDate(String startDate) {
+    this.startDate = startDate;
+  }
+  
+  public void updateEndDate(String endDate) {
+    this.endDate = endDate;
+  }
+
+  public void updateTitle(String title) {
+    this.title = title;
+  }
+
+  public void updateDate(String startDate, String endDate) {
+    this.updateStartDate(startDate);
+    this.updateEndDate(endDate);
+  }
+
+  public void updateAll(String startDate, String endDate, String title) {
+    this.updateStartDate(startDate);
+    this.updateEndDate(endDate);
+    this.updateTitle(title);
+  }
+  
+  
+  
+
   public static CalendarDto fromEntity(Calendar calendar) {
         return CalendarDto.builder()
                 .id(calendar.getId())
